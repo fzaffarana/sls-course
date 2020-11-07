@@ -1,0 +1,15 @@
+{
+  "env": {
+    "mocha": true,
+    "node": true
+  },
+  "plugins": [
+    "mocha"
+  ],
+  "extends": ["airbnb-typescript/base", "plugin:prettier/recommended", "plugin:mocha/recommended"],
+  "rules": {
+    "no-console": "off",
+    "mocha/no-mocha-arrows": "off",
+    "import/prefer-default-export": "off"
+  }
+}

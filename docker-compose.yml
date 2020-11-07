@@ -1,0 +1,24 @@
+# Specify the version of Docker Compose to be used.
+version: '3.7'
+  
+services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566-4599:4566-4599"
+    environment:
+      - SERVICES=dynamodb
+  
+  api:
+    build:
+      context: .
+      args:
+        NODE_ENV: docker
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - localstack
+    links:
+      - localstack

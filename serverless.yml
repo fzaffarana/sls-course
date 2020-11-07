@@ -1,0 +1,59 @@
+service:
+  name: auction-service
+
+plugins:
+  - serverless-pseudo-parameters
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: eu-west-1
+  environment:
+    AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
+  iamRoleStatements:
+    - ${file(iam/AuctionsTable.yml):AuctionsTableIAM}
+
+resources:
+  Resources:
+    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
+
+functions:
+  create-auction:
+    handler: dist/handlers/create-auction.handler
+    events:
+      - http:
+          method: POST
+          path: /auction
+
+  get-auctions:
+    handler: dist/handlers/get-auctions.handler
+    events:
+      - http:
+          method: GET
+          path: /auctions
+
+  get-auction:
+    handler: dist/handlers/get-auction.handler
+    events:
+      - http:
+          method: GET
+          path: /auction/{id}
+  
+  place-bid:
+    handler: dist/handlers/place-bid.handler
+    events:
+      - http:
+          method: PATCH
+          path: /auction/{id}/bid
+
+  # process-auctions:
+  #   handler: dist/handlers/process-auctions.handler
+  #   events:
+  #     - schedule: rate(1 minute)
+
+custom:
+  AuctionsTable:
+    name: !Ref AuctionsTable
+    arn: !GetAtt AuctionsTable.Arn
