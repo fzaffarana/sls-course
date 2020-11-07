@@ -2,7 +2,7 @@ import AWS from 'aws-sdk';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
-export const closeAuction = async (id: string) => {
+export const closeAuction = async (id: string): Promise<any> => {
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME as string,
     Key: { id },

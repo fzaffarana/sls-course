@@ -9,9 +9,7 @@ import schema from '../lib/schemas/create-auction-schema';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const createAuction = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+const createAuction = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const { title } = event.body as any;
   const now = new Date();
   const endDate = new Date(now.getTime());
@@ -47,6 +45,4 @@ const createAuction = async (
   };
 };
 
-export const handler = commonMiddleware(createAuction).use(
-  validator({ inputSchema: schema })
-);
+export const handler = commonMiddleware(createAuction).use(validator({ inputSchema: schema }));

@@ -9,9 +9,7 @@ import schema from '../lib/schemas/place-bid-schema';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const placeBid = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+const placeBid = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const { amount } = event.body as any;
   const { id } = event.pathParameters || {};
 
@@ -22,9 +20,7 @@ const placeBid = async (
   }
 
   if (amount <= auction.highestBid.amount) {
-    throw new createError.Forbidden(
-      `Your bid must be higher than ${auction.highestBid.amount}`
-    );
+    throw new createError.Forbidden(`Your bid must be higher than ${auction.highestBid.amount}`);
   }
 
   const params = {
@@ -53,6 +49,4 @@ const placeBid = async (
   };
 };
 
-export const handler = commonMiddleware(placeBid).use(
-  validator({ inputSchema: schema })
-);
+export const handler = commonMiddleware(placeBid).use(validator({ inputSchema: schema }));

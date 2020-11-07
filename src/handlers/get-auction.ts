@@ -1,5 +1,5 @@
 // Modules
-import { APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda'
+import { APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
 import AWS from 'aws-sdk';
 import createError from 'http-errors';
 import { commonMiddleware } from '../lib/common-middleware';
@@ -30,9 +30,7 @@ export const getAuctionById = async (id: string): Promise<any> => {
   return auction;
 };
 
-const getAuction = async (
-  event: APIGatewayEvent
-): Promise<APIGatewayProxyResult> => {
+const getAuction = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
   const { id } = event.pathParameters || {};
   const auction = await getAuctionById(id);
 

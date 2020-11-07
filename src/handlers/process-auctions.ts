@@ -2,10 +2,12 @@ import createError from 'http-errors';
 import { getEndedAuctions } from '../lib/get-ended-auctions';
 import { closeAuction } from '../lib/close-auction';
 
-const processAutions = async () => {
+const processAutions = async (): Promise<any> => {
   try {
     const auctionsToClose = await getEndedAuctions();
-    if (!auctionsToClose) return { closed: 0 };
+    if (!auctionsToClose) {
+      return { closed: 0 };
+    }
     const promises = auctionsToClose.map(({ id }) => closeAuction(id));
     await Promise.all(promises);
     return { closed: promises.length };
