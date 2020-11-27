@@ -19,8 +19,7 @@
     "strictFunctionTypes": true,
     "alwaysStrict": true,
     "noImplicitUseStrict": false,
-    "preserveSymlinks": true,
-    "sourceMap": true
+    "preserveSymlinks": true
   },
   "exclude": [
     "./node_modules/",
