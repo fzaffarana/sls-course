@@ -13,7 +13,25 @@ provider:
   memorySize: 128
   iamRoleStatements:
     - ${file(iam/send-email-iam.yml):SendEmailIAM}
+    - ${file(iam/mail-queue-iam.yml):MailQueueIAM}
+
+resources:
+  Resources:
+    MailQueue: ${file(resources/mail-queue.yml):MailQueue}
+  Outputs:
+    MailQueueArn: ${file(resources/mail-queue.yml):Outputs.MailQueueArn}
+    MailQueueUrl: ${file(resources/mail-queue.yml):Outputs.MailQueueUrl}
 
 functions:
   send-email:
     handler: dist/handlers/send-email.handler
+    events:
+      - sqs:
+          arn: ${self:custom.mailQueue.arn}
+          batchSize: 1
+
+custom:
+  mailQueue:
+    name: MailQueue-${self:provider.stage}
+    arn: !GetAtt MailQueue.Arn
+    url: !Ref MailQueue

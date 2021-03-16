@@ -1,0 +1,5 @@
+MailQueueIAM:
+  Effect: Allow
+  Action:
+    - ses:ReceiveMessage
+  Resource: ${self:custom.mailQueue.arn}
